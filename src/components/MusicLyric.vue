@@ -24,9 +24,10 @@
         </svg>
       </div>
     </div>
-    <!-- 唱片 -->
+    <!-- 中间 -->
     <van-swipe :loop="false" :show-indicators="false">
       <van-swipe-item>
+        <!-- 唱片 -->
         <div class="centre">
           <img
             src="../assets/magneticNeedle.png"
@@ -44,8 +45,17 @@
         </div>
       </van-swipe-item>
       <van-swipe-item>
+        <!-- 歌词 -->
         <div class="musicLyric" ref="musicLyric">
-          <p v-for="(item, index) in lyric" :key="index" :class="{active:(currentTime*1000>=item.time && currentTime*1000<item.pre)}">
+          <p
+            v-for="(item, index) in lyric"
+            :key="index"
+            :class="{
+              active:
+                currentTime * 1000 >= item.time &&
+                currentTime * 1000 < item.pre,
+            }"
+          >
             {{ item.lrc }}
           </p>
         </div>
@@ -148,6 +158,7 @@ const changeSchedule = (value) => {
   porps.currentTime(value);
 };
 
+// 重写歌词
 let lyric = computed(() => {
   let arr = [];
   if (lyricList) {
@@ -156,23 +167,27 @@ let lyric = computed(() => {
       let sec = item.slice(4, 6);
       let mill = item.slice(7, 10);
       let lrc = item.slice(11);
-      let time = parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
+      let time =
+        parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
       if (isNaN(Number(mill))) {
         mill = item.slice(7, 9);
         lrc = item.slice(10);
-        time = parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
+        time =
+          parseInt(min) * 60 * 1000 + parseInt(sec) * 1000 + parseInt(mill);
       }
-      return { min, sec, mill, lrc,time };
+      return { min, sec, mill, lrc, time };
     });
-    arr.forEach((item,index)=>{
-      if(index===arr.length-1){
-        item.pre=0
-      }else{
-        item.pre=arr[index+1].time
+    arr = arr.filter((item) => {
+      return item.lrc != "";
+    });
+    arr.forEach((item, index) => {
+      if (index === arr.length - 1) {
+        item.pre = 0;
+      } else {
+        item.pre = arr[index + 1].time;
       }
-    })
+    });
   }
-  console.log(arr);
   return arr;
 });
 
@@ -207,15 +222,14 @@ const songList = () => {
   state.songListPopups = true;
 };
 
+let musicLyric = ref(null);
 
-let musicLyric = ref(null)
-
-watch([currentTime],()=>{
-  let p = document.querySelector("p.active")
-  if(p?.offsetTop>300){
-    musicLyric.value.scrollTop=p?.offsetTop-180
+watch([currentTime], () => {
+  let p = document.querySelector("p.active");
+  if (p?.offsetTop > 300) {
+    musicLyric.value.scrollTop = p?.offsetTop - 180;
   }
-})
+});
 </script>
 
 <style scoped lang='less'>
@@ -321,7 +335,8 @@ watch([currentTime],()=>{
           width: 100%;
           height: 40rem;
         }
-        .active{
+        .active {
+          transition: all 1s;
           color: #fff;
           font-size: 20rem;
         }
