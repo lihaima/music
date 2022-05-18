@@ -1,6 +1,7 @@
 <template>
   <div class="MusicLyric">
     <img :src="play.al.picUrl" alt="" class="bgimg" />
+    <!-- 信息 -->
     <div class="top">
       <div class="left">
         <svg class="icon" aria-hidden="true" @click="popup">
@@ -23,6 +24,7 @@
         </svg>
       </div>
     </div>
+    <!-- 唱片 -->
     <div class="centre">
       <img
         src="../assets/magneticNeedle.png"
@@ -38,6 +40,7 @@
         :class="{ 'rotate-enter': isBtnShow, 'rotate-leave': !isBtnShow }"
       />
     </div>
+    <!-- 控件 -->
     <div class="flooter">
       <div class="moreOperation">
         <svg class="icon" aria-hidden="true">
@@ -67,6 +70,7 @@
           :step="0.01"
           bar-height="2rem"
           active-color="#000"
+          @change="changeSchedule"
         />
         <!-- <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.01" /> -->
         <span>{{ current(duration) }}</span>
@@ -126,8 +130,15 @@ const {
   songListPopups,
 } = storeToRefs(state);
 
+
+
 // 播放歌曲
-const porps = defineProps(["play"]);
+const porps = defineProps(["play","currentTime"]);
+
+// 修改进度条
+const changeSchedule = (value) => {
+  porps.currentTime(value)
+}
 
 // 播放歌曲信息
 const play = computed(() => {

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-import { reqDetail, reqMusicList } from '../api/index'
+import { reqDetail, reqMusicList,reqLyric } from '../api/index'
 
 export default defineStore("itemMusic", {
     state() {
@@ -11,18 +11,7 @@ export default defineStore("itemMusic", {
             detailSongs: [],
             // 歌曲列表
             playList: [
-                {
-                    name: "光辉岁月",
-                    al: {
-                        picUrl: "https://p2.music.126.net/BR_ETn4YsHtvDwIJbwK2KA==/109951165806258437.jpg"
-                    },
-                    ar: [
-                        {
-                            name: "我"
-                        }
-                    ],
-                    id: "347639"
-                }
+               
             ],
             // 判断是否是播放
             isBtnShow: 0,
@@ -45,6 +34,9 @@ export default defineStore("itemMusic", {
             const detail = await Promise.allSettled([reqDetail(id), reqMusicList(id)])
             this.detailPlaylist = detail[0]?.value?.playlist || []
             this.detailSongs = detail[1]?.value?.songs || []
+        },
+       async lyric(id){
+            await reqLyric(id)
         }
     }
 })

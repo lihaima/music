@@ -13,3 +13,6 @@ export const reqMusicList = (id) => request({url:`/playlist/track/all?id=${id}&l
 
 // 获取音乐播放
 export const reqMusic = (id) => request({url:`/song/url?id=${id}`})
+
+// 获取歌词
+export const reqLyric = (id) => request({url:`/lyric?id=${id}`})

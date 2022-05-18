@@ -1,5 +1,6 @@
 <template>
-  <div class="flooterMusic">
+  <div class="flooterMusic" v-if="playList.length">
+    <!-- 播放信息 -->
     <div class="left" @click="popup">
       <img :src="playList[playListIndex]?.al.picUrl" alt="" />
       <div class="name">
@@ -7,6 +8,7 @@
         <span>横划切换歌曲</span>
       </div>
     </div>
+    <!-- 播放控件 -->
     <div class="right">
       <svg class="icon" aria-hidden="true" @touchstart="play" v-if="isBtnShow">
         <use xlink:href="#icon-zanting"></use>
@@ -18,18 +20,24 @@
         <use xlink:href="#icon-unorderedlist"></use>
       </svg>
     </div>
+    <!-- 音乐播放 -->
     <audio
       ref="audio"
       :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"
+      @timeupdate="timeUpadte"
+      @ended="finish"
     ></audio>
+    <!-- 弹出层 -->
     <van-popup
       v-model:show="playshow"
       position="right"
       :style="{ height: '100%', width: '100%' }"
     >
-      <MusicLyric :play="play" />
+      <MusicLyric :play="play" :currentTime="time" />
     </van-popup>
      <van-popup
+
+
       v-model:show="floorSongList"
       round
       position="bottom"
@@ -59,26 +67,30 @@ const play = () => {
     }
   }, 10);
 };
+
+// 获取当前播放时间
+const timeUpadte = (e) =>{
+  state.currentTime=e.target.currentTime
+}
+
+// 移动滑块调用
+let time = (value) => {
+  audio.value.currentTime=value
+  transmit()
+}
+
 // 暂停歌曲
 const pause = () => {
 state.isBtnShow = 0;
       audio?.value?.pause();
-      clearInterval(currentTimes)
 }
 // 播放
 const transmit = () => {
  state.isBtnShow = 1;
       audio?.value?.play();
-      setCurrentTime()
       setDuration()
 }
-// 获取当前时间
-let currentTimes = null
-const setCurrentTime = ()=>{
-  currentTimes = setInterval(()=>{
-    state.currentTime=audio.value.currentTime
-  },1000)
-}
+
 // 获取总时长
 const setDuration = () => {
   setTimeout(()=>{
@@ -96,13 +108,14 @@ watch(()=>
   },
   { deep: true }
 );
-// 播放结束暂替歌曲
-watch([currentTime],()=>{
-  if(currentTime?.value===duration?.value){
-    // pause()
-    state.playListIndex++
+// 播放结束
+const finish = () => {
+  // pause()
+  if(playList.value.length>=playListIndex.value+1){
+    return pause()
   }
-})
+  return state.playListIndex++
+}
 // 显示播放页
 const popup = () => {
   state.playshow = true;
