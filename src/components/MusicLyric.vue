@@ -57,7 +57,19 @@
         </svg>
       </div>
       <div class="progressBar">
-        <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.01" />
+        <span>{{ current(currentTime) }}</span>
+        <van-slider
+          class="range"
+          v-model="currentTime"
+          button-size="16rem"
+          :min="0"
+          :max="duration"
+          :step="0.01"
+          bar-height="2rem"
+          active-color="#000"
+        />
+        <!-- <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.01" /> -->
+        <span>{{ current(duration) }}</span>
       </div>
       <div class="musicPlay">
         <svg class="icon" aria-hidden="true">
@@ -80,11 +92,19 @@
         <svg class="icon" aria-hidden="true" @click="theFollowingPiece">
           <use xlink:href="#icon-xiayishou_huaban"></use>
         </svg>
-        <svg class="icon" aria-hidden="true">
+        <svg class="icon" aria-hidden="true" @click="songList">
           <use xlink:href="#icon-unorderedlist"></use>
         </svg>
       </div>
     </div>
+    <van-popup
+      v-model:show="songListPopups"
+      round
+      position="bottom"
+      :style="{ height: '50%' }"
+    >
+    <SongList close="lyric"/>
+    </van-popup>
   </div>
 </template>
 
@@ -93,16 +113,28 @@ import { defineProps, computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
+import {current} from '../hooks/itemMisic'
 import itemMusicStore from "../store/itemMusic";
+import SongList from './SongList.vue'
 const state = itemMusicStore();
-const { isBtnShow, playList, playListIndex,currentTime,duration } = storeToRefs(state);
+const {
+  isBtnShow,
+  playList,
+  playListIndex,
+  currentTime,
+  duration,
+  songListPopups,
+} = storeToRefs(state);
+
 // 播放歌曲
 const porps = defineProps(["play"]);
+
 // 播放歌曲信息
 const play = computed(() => {
   return playList.value[playListIndex.value];
 });
 
+// 下一首歌
 const theFollowingPiece = () => {
   if (playList.value.length > playListIndex.value + 1) {
     state.playListIndex += 1;
@@ -110,7 +142,7 @@ const theFollowingPiece = () => {
     state.playListIndex = 0;
   }
 };
-
+// 上一首歌
 const onA = () => {
   if (playListIndex.value === 0) {
     state.playListIndex = playList.value.length - 1;
@@ -118,9 +150,14 @@ const onA = () => {
     state.playListIndex -= 1;
   }
 };
-// 关闭
+// 关闭歌曲详情页
 const popup = () => {
   state.playshow = false;
+};
+
+// 打开歌曲列表页
+const songList = () => {
+  state.songListPopups = true;
 };
 </script>
 
@@ -139,7 +176,7 @@ const popup = () => {
     top: 0;
     left: 0;
     z-index: -1;
-    filter: blur(50rem);
+    filter: blur(80rem);
   }
   // 头部
   .top {
@@ -228,10 +265,12 @@ const popup = () => {
       }
     }
     // 进度条
-    .progressBar{
-        .range{
-            width: 100%;
-        }
+    .progressBar {
+      display: flex;
+      align-items: center;
+      span {
+        padding: 0 10rem;
+      }
     }
     .musicPlay {
       display: flex;

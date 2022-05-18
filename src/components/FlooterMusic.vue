@@ -14,7 +14,7 @@
       <svg class="icon" aria-hidden="true" @touchstart="play" v-else>
         <use xlink:href="#icon-bofang"></use>
       </svg>
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon" aria-hidden="true" @click="showPopups">
         <use xlink:href="#icon-unorderedlist"></use>
       </svg>
     </div>
@@ -29,6 +29,14 @@
     >
       <MusicLyric :play="play" />
     </van-popup>
+     <van-popup
+      v-model:show="floorSongList"
+      round
+      position="bottom"
+      :style="{ height: '50%' }"
+    >
+    <SongList close="flooter" />
+    </van-popup>
   </div>
 </template>
 
@@ -37,8 +45,9 @@ import { ref, watch, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 import MusicLyric from "../components/MusicLyric.vue";
+import SongList from './SongList.vue'
 const state = itemMusicStore();
-const { isBtnShow, playList, playListIndex, playshow,currentTime,duration } = storeToRefs(state);
+const { isBtnShow, playList, playListIndex, playshow,currentTime,duration,floorSongList } = storeToRefs(state);
 let audio = ref();
 // 播放暂停音乐
 const play = () => {
@@ -94,10 +103,14 @@ watch([currentTime],()=>{
     state.playListIndex++
   }
 })
-// 显示歌词
+// 显示播放页
 const popup = () => {
   state.playshow = true;
 };
+// 歌单列表页
+const showPopups = () => {
+  state.floorSongList = true
+}
 </script>
 
 <style scoped lang='less'>

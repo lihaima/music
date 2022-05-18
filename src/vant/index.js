@@ -1,6 +1,6 @@
-import { Swipe, SwipeItem ,Popup} from 'vant';
+import { Swipe, SwipeItem ,Popup,Slider} from 'vant';
 
-let vantList = [Swipe,SwipeItem , Popup ]
+let vantList = [Swipe,SwipeItem , Popup,Slider ]
 
 export default function(app){
     vantList.forEach((value)=>{
