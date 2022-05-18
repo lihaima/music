@@ -8,6 +8,9 @@
              {{item.name}}
          </span>
          </div>
+         <svg class="icon" aria-hidden="true" @click="songList" v-if="index===playListIndex">
+          <use xlink:href="#icon-zhengzaibofang"></use>
+        </svg>
      </div>
   </van-swipe-item>
 
@@ -21,7 +24,7 @@ import {defineProps} from "vue"
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 const state = itemMusicStore();
-const {playList} = storeToRefs(state)
+const {playList,playListIndex} = storeToRefs(state)
 const props = defineProps(['close'])
 
 const close = () => {
