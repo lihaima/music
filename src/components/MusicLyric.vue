@@ -25,21 +25,33 @@
       </div>
     </div>
     <!-- 唱片 -->
-    <div class="centre">
-      <img
-        src="../assets/magneticNeedle.png"
-        alt=""
-        class="imgNeedle"
-        :class="{ Needle: isBtnShow }"
-      />
-      <img src="../assets/cd.png" alt="" class="imgCd" />
-      <img
-        :src="play.al.picUrl"
-        alt=""
-        class="imgban"
-        :class="{ 'rotate-enter': isBtnShow, 'rotate-leave': !isBtnShow }"
-      />
-    </div>
+    <van-swipe :loop="false" :show-indicators="false">
+      <van-swipe-item>
+        <div class="centre">
+          <img
+            src="../assets/magneticNeedle.png"
+            alt=""
+            class="imgNeedle"
+            :class="{ Needle: isBtnShow }"
+          />
+          <img src="../assets/cd.png" alt="" class="imgCd" />
+          <img
+            :src="play.al.picUrl"
+            alt=""
+            class="imgban"
+            :class="{ 'rotate-enter': isBtnShow, 'rotate-leave': !isBtnShow }"
+          />
+        </div>
+      </van-swipe-item>
+      <van-swipe-item>
+        <div class="musicLyric" ref="musicLyric">
+          <p v-for="(item, index) in lyric" :key="index" :class="{active:(currentTime*1000>=item.time && currentTime*1000<item.pre)}">
+            {{ item.lrc }}
+          </p>
+        </div>
+      </van-swipe-item>
+    </van-swipe>
+
     <!-- 控件 -->
     <div class="flooter">
       <div class="moreOperation">
@@ -107,19 +119,20 @@
       position="bottom"
       :style="{ height: '50%' }"
     >
-    <SongList close="lyric"/>
+      <SongList close="lyric" />
     </van-popup>
   </div>
 </template>
 
 <script setup>
-import { defineProps, computed, onMounted } from "vue";
+import { defineProps, computed, onMounted, watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
-import {current} from '../hooks/itemMisic'
+import { current } from "../hooks/itemMisic";
 import itemMusicStore from "../store/itemMusic";
-import SongList from './SongList.vue'
+import SongList from "./SongList.vue";
+const porps = defineProps(["play", "currentTime"]);
 const state = itemMusicStore();
 const {
   isBtnShow,
@@ -128,17 +141,40 @@ const {
   currentTime,
   duration,
   songListPopups,
+  lyricList,
 } = storeToRefs(state);
-
-
-
-// 播放歌曲
-const porps = defineProps(["play","currentTime"]);
-
 // 修改进度条
 const changeSchedule = (value) => {
-  porps.currentTime(value)
-}
+  porps.currentTime(value);
+};
+
+let lyric = computed(() => {
+  let arr = [];
+  if (lyricList) {
+    arr = lyricList.value.split(/[(\r\n)\r\n]+/).map((item) => {
+      let min = item.slice(1, 3);
+      let sec = item.slice(4, 6);
+      let mill = item.slice(7, 10);
+      let lrc = item.slice(11);
+      let time = parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
+      if (isNaN(Number(mill))) {
+        mill = item.slice(7, 9);
+        lrc = item.slice(10);
+        time = parseInt(min)*60*1000+parseInt(sec)*1000+parseInt(mill)
+      }
+      return { min, sec, mill, lrc,time };
+    });
+    arr.forEach((item,index)=>{
+      if(index===arr.length-1){
+        item.pre=0
+      }else{
+        item.pre=arr[index+1].time
+      }
+    })
+  }
+  console.log(arr);
+  return arr;
+});
 
 // 播放歌曲信息
 const play = computed(() => {
@@ -170,6 +206,16 @@ const popup = () => {
 const songList = () => {
   state.songListPopups = true;
 };
+
+
+let musicLyric = ref(null)
+
+watch([currentTime],()=>{
+  let p = document.querySelector("p.active")
+  if(p?.offsetTop>300){
+    musicLyric.value.scrollTop=p?.offsetTop-180
+  }
+})
 </script>
 
 <style scoped lang='less'>
@@ -199,6 +245,8 @@ const songList = () => {
       display: flex;
       .name {
         margin-left: 20rem;
+        width: 150rem;
+
         .singerName {
           display: flex;
           align-items: center;
@@ -211,58 +259,81 @@ const songList = () => {
       }
     }
   }
-  // 磁盘
-  .centre {
+  // 中间
+  .van-swipe {
     width: 100%;
     height: 350rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    .imgNeedle {
-      width: 120rem;
-      position: absolute;
-      left: 50%;
-      z-index: 1;
-      transform-origin: top left;
-      transition: all 1s;
-    }
-    .Needle {
-      transform: rotate(12deg);
-      translate: all 1s;
-    }
-    .imgCd {
-      width: 240rem;
-      position: absolute;
-      bottom: 0;
-    }
-    .imgban {
-      width: 150rem;
-      height: 150rem;
-      border-radius: 50%;
-      position: absolute;
-      bottom: 45rem;
-      animation: rotate 10s linear infinite;
-    }
-    .rotate-enter {
-      animation-play-state: running;
-    }
-    .rotate-leave {
-      animation-play-state: paused;
-    }
-    @keyframes rotate {
-      0% {
-        transform: rotate(0deg);
+    .van-swipe-item {
+      height: 100%;
+      .centre {
+        width: 100%;
+        height: 350rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        .imgNeedle {
+          width: 120rem;
+          position: absolute;
+          left: 50%;
+          z-index: 1;
+          transform-origin: top left;
+          transition: all 1s;
+        }
+        .Needle {
+          transform: rotate(12deg);
+          translate: all 1s;
+        }
+        .imgCd {
+          width: 240rem;
+          position: absolute;
+          bottom: 0;
+        }
+        .imgban {
+          width: 150rem;
+          height: 150rem;
+          border-radius: 50%;
+          position: absolute;
+          bottom: 45rem;
+          animation: rotate 10s linear infinite;
+        }
+        .rotate-enter {
+          animation-play-state: running;
+        }
+        .rotate-leave {
+          animation-play-state: paused;
+        }
+        @keyframes rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
       }
-      100% {
-        transform: rotate(360deg);
+      .musicLyric {
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+        p {
+          text-align: center;
+          width: 100%;
+          height: 40rem;
+        }
+        .active{
+          color: #fff;
+          font-size: 20rem;
+        }
       }
     }
   }
+
+  // 歌词
+
   //   底部
   .flooter {
     height: 200rem;
-    margin-top: 60rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -26,7 +26,9 @@ export default defineStore("itemMusic", {
             // 歌单列表弹出层
             songListPopups:false,
             // 底部导航歌曲列表弹出层
-            floorSongList:false
+            floorSongList:false,
+            // 歌词
+            lyricList:""
         }
     },
     actions: {
@@ -36,7 +38,10 @@ export default defineStore("itemMusic", {
             this.detailSongs = detail[1]?.value?.songs || []
         },
        async lyric(id){
-            await reqLyric(id)
+           let lrc = await reqLyric(id)
+           if(lrc.code === 200){
+               this.lyricList=lrc?.lrc?.lyric
+           }
         }
     }
 })

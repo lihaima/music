@@ -49,13 +49,13 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from "vue";
+import { ref, watch, nextTick,onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 import MusicLyric from "../components/MusicLyric.vue";
 import SongList from './SongList.vue'
 const state = itemMusicStore();
-const { isBtnShow, playList, playListIndex, playshow,currentTime,duration,floorSongList } = storeToRefs(state);
+const { isBtnShow, playList, playListIndex, playshow,currentTime,duration,floorSongList} = storeToRefs(state);
 let audio = ref();
 // 播放暂停音乐
 const play = () => {
@@ -72,6 +72,9 @@ const play = () => {
 const timeUpadte = (e) =>{
   state.currentTime=e.target.currentTime
 }
+onUpdated(()=>{
+  state.lyric(playList?.value[playListIndex.value].id)
+})
 
 // 移动滑块调用
 let time = (value) => {
