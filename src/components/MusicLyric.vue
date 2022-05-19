@@ -199,7 +199,7 @@ const play = computed(() => {
 // 下一首歌
 const theFollowingPiece = () => {
   if (playList.value.length > playListIndex.value + 1) {
-    state.playListIndex += 1;
+    state.playListIndex++;
   } else {
     state.playListIndex = 0;
   }
@@ -222,14 +222,18 @@ const songList = () => {
   state.songListPopups = true;
 };
 
+// 修改歌词位置
 let musicLyric = ref(null);
 
 watch([currentTime], () => {
   let p = document.querySelector("p.active");
-  if (p?.offsetTop > 300) {
+  if (p?.offsetTop > 180) {
     musicLyric.value.scrollTop = p?.offsetTop - 180;
   }
 });
+watch([playListIndex],()=>{
+  musicLyric.value.scrollTop=0
+})
 </script>
 
 <style scoped lang='less'>
@@ -239,6 +243,7 @@ watch([currentTime], () => {
   justify-content: space-between;
   height: 100vh;
   box-sizing: border-box;
+  overflow: hidden;
   // 背景
   .bgimg {
     width: 100%;

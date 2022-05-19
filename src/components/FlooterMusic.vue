@@ -35,78 +35,87 @@
     >
       <MusicLyric :play="play" :currentTime="time" />
     </van-popup>
-     <van-popup
-
-
+    <van-popup
       v-model:show="floorSongList"
       round
       position="bottom"
       :style="{ height: '50%' }"
     >
-    <SongList close="flooter" />
+      <SongList close="flooter" />
     </van-popup>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, nextTick,onUpdated } from "vue";
+import { ref, watch, nextTick, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 import MusicLyric from "../components/MusicLyric.vue";
-import SongList from './SongList.vue'
+import SongList from "./SongList.vue";
 const state = itemMusicStore();
-const { isBtnShow, playList, playListIndex, playshow,currentTime,duration,floorSongList} = storeToRefs(state);
+const {
+  isBtnShow,
+  playList,
+  playListIndex,
+  playshow,
+  currentTime,
+  duration,
+  floorSongList,
+} = storeToRefs(state);
 let audio = ref();
 // 播放暂停音乐
 const play = () => {
   setTimeout(() => {
     if (audio?.value?.paused) {
-     transmit()
+      transmit();
     } else {
-      pause()
+      pause();
     }
   }, 10);
 };
 
 // 获取当前播放时间
-const timeUpadte = (e) =>{
-  state.currentTime=e.target.currentTime
-}
-onUpdated(()=>{
-  state.lyric(playList?.value[playListIndex.value].id)
-})
+const timeUpadte = (e) => {
+  state.currentTime = e.target.currentTime;
+};
 
-// 移动滑块调用
+// 获取歌词
+onUpdated(() => {
+  state.lyric(playList?.value[playListIndex.value].id);
+});
+
+// 移动进度条调用
 let time = (value) => {
-  audio.value.currentTime=value
-  transmit()
-}
+  audio.value.currentTime = value;
+  transmit();
+};
 
 // 暂停歌曲
 const pause = () => {
-state.isBtnShow = 0;
-      audio?.value?.pause();
-}
+  state.isBtnShow = 0;
+  audio?.value?.pause();
+};
 // 播放
 const transmit = () => {
- state.isBtnShow = 1;
-      audio?.value?.play();
-      setDuration()
-}
+  state.isBtnShow = 1;
+  audio?.value?.play();
+  setDuration();
+};
 
 // 获取总时长
 const setDuration = () => {
-  setTimeout(()=>{
-    state.duration = audio?.value?.duration
-  },1000)
-}
+  setTimeout(() => {
+    state.duration = audio?.value?.duration;
+    if(isNaN(state.duration)) return state.playListIndex++
+  }, 1000);
+};
 
 // 切换歌曲播放
-watch(()=>
-  [playList, playListIndex],
+watch(
+  () => [playList, playListIndex],
   () => {
     nextTick(() => {
-      transmit()
+      transmit();
     });
   },
   { deep: true }
@@ -114,19 +123,22 @@ watch(()=>
 // 播放结束
 const finish = () => {
   // pause()
-  if(playList.value.length>=playListIndex.value+1){
-    return pause()
+  if (playList.value.length >= playListIndex.value + 1) {
+    return state.playListIndex++;
+  } else if (playList.value.length === 1) {
+    return transmit();
   }
-  return state.playListIndex++
-}
+  return (state.playListIndex = 0);
+};
+
 // 显示播放页
 const popup = () => {
   state.playshow = true;
 };
 // 歌单列表页
 const showPopups = () => {
-  state.floorSongList = true
-}
+  state.floorSongList = true;
+};
 </script>
 
 <style scoped lang='less'>

@@ -1,7 +1,7 @@
 function remSize(){
     let deviceWidth = document.documentElement.clientWidth || window.innerWidth
-    if(deviceWidth>=375){
-        deviceWidth=375
+    if(deviceWidth>=1024){
+        deviceWidth=1024
     }else if(deviceWidth<=160){
         deviceWidth=160
     }

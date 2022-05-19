@@ -1,6 +1,6 @@
 <template>
  <router-view />
- <FlooterMusic />
+  <FlooterMusic />
 </template>
 
 <script setup>
