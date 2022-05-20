@@ -14,11 +14,11 @@
         </svg>
         <span>私人FM</span>
       </li>
-      <li>
+      <li @click="goArtist">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-gedan"></use>
         </svg>
-        <span>歌单</span>
+        <span>歌手</span>
       </li>
       <li>
         <svg class="icon" aria-hidden="true">
@@ -31,6 +31,11 @@
 </template>
 
 <script setup>
+import {useRouter} from 'vue-router'
+const router = useRouter()
+const goArtist = () => {
+  router.push({path:"/artist"})
+}
 </script>
 
 <style scoped lang='less'>

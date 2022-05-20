@@ -69,8 +69,6 @@ const play = (index) => {
 
 <style scoped lang='less'>
 .search {
-  //   background-color: #c0d9d9;
-//   height: 100vh;
   padding: 10rem;
   .top {
     display: flex;
@@ -86,7 +84,7 @@ const play = (index) => {
       margin-left: 10rem;
       height: 30rem;
       padding-left: 20rem;
-      background-color: #999;
+      background-color: ghostwhite;
     }
     .searchMusic {
       width: 60rem;

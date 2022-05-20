@@ -35,6 +35,7 @@
     >
       <MusicLyric :play="play" :currentTime="time" />
     </van-popup>
+    <!-- 歌曲列表 -->
     <van-popup
       v-model:show="floorSongList"
       round

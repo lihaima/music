@@ -1,0 +1,92 @@
+<template>
+  <div class='artistSongs'>
+      <MusicTop :name="name" :isShow="true" />
+      <div class="name">
+          <img :src="picUrl" alt="">
+      </div>
+      <div class="MusicList">
+      <div class="item" v-for="(item, index) in songsList" :key="index">
+        <div class="item-left" @click="switchover(songsList, index)">
+          <span>{{ index + 1 }}</span>
+          <div class="name">
+            <span>{{ item?.name }}</span
+            ><br />
+            <span style="color: #c0c0c0">{{ item?.ar[0]?.name }}</span>
+          </div>
+        </div>
+        <div class="item-right">
+          <svg class="icon icon1" aria-hidden="true" v-if="item.mv != 0">
+            <use xlink:href="#icon-bofang"></use>
+          </svg>
+          <svg class="icon icon2" aria-hidden="true">
+            <use xlink:href="#icon-gengduo"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import MusicTop from './MusicTop.vue'
+import {defineProps,onMounted} from 'vue'
+const porps = defineProps(["artist"])
+import {storeToRefs} from "pinia"
+import artistStore from '../store/artist'
+import itemMusicStore from '../store/itemMusic'
+const state = artistStore()
+const {artist,songsList} = storeToRefs(state)
+console.log(artist);
+const {id,img1v1Url,picUrl,name} = artist?.value
+
+// 获取歌曲列表
+onMounted(()=>{
+state.getSongs(id)
+})
+const switchover = (songsList, index) => {
+  itemMusicStore().playListIndex = index
+  itemMusicStore().playList = songsList
+};
+
+</script>
+
+<style scoped lang='less'>
+.artistSongs{
+    .name{
+        img{
+            width: 100%;
+            height: 300rem;
+        }
+    }
+    .MusicList {
+    .item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10rem;
+      .item-left {
+        width: 240rem;
+        display: flex;
+        font-size: 14rem;
+        align-items: center;
+        .name {
+          width: 100%;
+          margin-left: 20rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      .item-right {
+        width: 80rem;
+        color: #c0c0c0;
+        .icon1 {
+          float: left;
+        }
+        .icon2 {
+          float: right;
+        }
+      }
+    }
+  }
+}
+</style>

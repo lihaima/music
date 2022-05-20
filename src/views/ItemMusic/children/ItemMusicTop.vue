@@ -1,22 +1,8 @@
 <template>
   <div class="itemMusicTop">
     <img :src="detailPlaylist.coverImgUrl" alt="" />
-    <div class="top">
-      <div class="top-left">
-        <svg class="icon" aria-hidden="true" @touchstart="retreats">
-          <use xlink:href="#icon-zuo"></use>
-        </svg>
-        <span>歌单</span>
-      </div>
-      <div class="top-right">
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-sousuo"></use>
-        </svg>
-        <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-gengduo"></use>
-        </svg>
-      </div>
-    </div>
+    <MusicTop name="歌单"/>
+    <!-- 内容 -->
     <div class="centre">
       <div class="centre-left">
         <img :src="detailPlaylist.coverImgUrl" alt="" />
@@ -66,20 +52,14 @@
 </template>
 
 <script setup>
+import MusicTop from '../../../components/MusicTop.vue'
 import { storeToRefs } from "pinia";
-import { useRouter } from "vue-router";
 import itemMusic from "../../../store/itemMusic";
 import { retreat, changeCount } from "../../../hooks/itemMisic";
 
-const router = useRouter();
 const state = itemMusic();
-
 const { detailPlaylist } = storeToRefs(state);
 
-// 后退
-const retreats = () => {
-  retreat(router);
-};
 </script>
 
 <style scoped lang='less'>
@@ -93,22 +73,6 @@ const retreats = () => {
     top: 0;
     left: 0;
     z-index: -1;
-  }
-  // 头
-  .top {
-    display: flex;
-    justify-content: space-between;
-    height: 30rem;
-    margin-top: 10rem;
-    .top-left,
-    .top-right {
-      width: 100rem;
-      height: 100%;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      color: #fff;
-    }
   }
   //   内容
   .centre {
