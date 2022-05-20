@@ -28,7 +28,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 const state = itemMusicStore();

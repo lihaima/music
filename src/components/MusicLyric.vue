@@ -138,7 +138,7 @@
 </template>
 
 <script setup>
-import { defineProps, computed, onMounted, watch, ref } from "vue";
+import { computed, onMounted, watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
