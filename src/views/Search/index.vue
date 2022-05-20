@@ -70,7 +70,7 @@ const play = (index) => {
 <style scoped lang='less'>
 .search {
   //   background-color: #c0d9d9;
-  height: 100vh;
+//   height: 100vh;
   padding: 10rem;
   .top {
     display: flex;
