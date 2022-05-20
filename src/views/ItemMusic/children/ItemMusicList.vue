@@ -1,5 +1,6 @@
 <template>
   <div class="ItemMusicList">
+    <!-- 头 -->
     <div class="top">
       <div class="top-left">
         <svg class="icon" aria-hidden="true">
@@ -7,7 +8,7 @@
         </svg>
         <div class="counts">
           <h4>播放全部</h4>
-          <span class="quantity">(共{{ detailSongs.length }}首)</span>
+          <span class="quantity">(共{{ state.detailSongs.length }}首)</span>
         </div>
       </div>
       <div class="top-right">
@@ -18,40 +19,21 @@
       </div>
     </div>
     <!-- 歌单列表 -->
-    <div class="MusicList">
-      <div class="item" v-for="(item, index) in detailSongs" :key="index">
-        <div class="item-left" @click="switchover(detailSongs, index)">
-          <span>{{ index + 1 }}</span>
-          <div class="name">
-            <span>{{ item?.name }}</span
-            ><br />
-            <span style="color: #c0c0c0">{{ item?.ar[0]?.name }}</span>
-          </div>
-        </div>
-        <div class="item-right">
-          <svg class="icon icon1" aria-hidden="true" v-if="item.mv != 0">
-            <use xlink:href="#icon-bofang"></use>
-          </svg>
-          <svg class="icon icon2" aria-hidden="true">
-            <use xlink:href="#icon-gengduo"></use>
-          </svg>
-        </div>
-      </div>
-    </div>
+    <SongList :songs="songs"/>
   </div>
 </template>
 
 <script setup>
+import {computed} from 'vue'
 import itemMusicStore from "../../../store/itemMusic";
-import { storeToRefs } from "pinia";
-
+import SongList from '../../../components/SongList.vue'
 const state = itemMusicStore();
-const { detailSongs ,detailPrivileges} = storeToRefs(state);
 
-const switchover = (detailSongs, index) => {
-  state.playListIndex = index
-  state.playList = detailSongs
-};
+const songs = computed(()=>{
+  return state.detailSongs
+})
+
+
 </script>
 
 <style scoped lang='less'>
@@ -96,36 +78,6 @@ const switchover = (detailSongs, index) => {
       span {
         font-size: 14rem;
         margin-left: 6rem;
-      }
-    }
-  }
-  .MusicList {
-    .item {
-      display: flex;
-      justify-content: space-between;
-      padding: 10rem;
-      .item-left {
-        width: 240rem;
-        display: flex;
-        font-size: 14rem;
-        align-items: center;
-        .name {
-          width: 100%;
-          margin-left: 20rem;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-      }
-      .item-right {
-        width: 80rem;
-        color: #c0c0c0;
-        .icon1 {
-          float: left;
-        }
-        .icon2 {
-          float: right;
-        }
       }
     }
   }

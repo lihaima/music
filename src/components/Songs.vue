@@ -1,5 +1,5 @@
 <template>
-<!-- 歌曲列表 -->
+<!-- 播放歌曲列表 -->
   <van-swipe vertical :loop="false" :height="50">
     <van-swipe-item
       v-for="(item, index) in playList"

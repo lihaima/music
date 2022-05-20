@@ -7,50 +7,27 @@
       <input type="text" class="input" v-model="keywords" />
       <div class="searchMusic" @click="searchMusic">搜索</div>
     </div>
-    <div class="musicList">
-      <div class="item" v-for="(item, index) in playList" :key="item.id" @click="play(index)">
-        <div class="left">
-          <span>{{ index + 1 }}</span>
-          <div class="name">
-            <span>{{ item.name }}</span>
-            <p class="p">
-              <span v-for="list in item?.ar" :key="list.id">{{
-                list.name
-              }}</span>
-            </p>
-          </div>
-        </div>
-        <div class="right">
-          <svg
-            class="icon icon1"
-            aria-hidden="true"
-            @touchstart="retreats"
-            v-if="item.mv != 0"
-          >
-            <use xlink:href="#icon-bofang"></use>
-          </svg>
-          <svg class="icon icon2" aria-hidden="true" @touchstart="retreats">
-            <use xlink:href="#icon-gengduo"></use>
-          </svg>
-        </div>
-      </div>
-    </div>
+    <!-- 歌曲列表 -->
+    <SongList :songs="songs"/>
   </div>
 </template>
 
 <script setup>
-import { ref } from "@vue/reactivity";
+import {ref,computed} from 'vue'
 import { useRouter } from "vue-router";
-import { retreat } from "../../hooks/itemMisic";
 const router = useRouter();
-import { storeToRefs } from "pinia";
 import searchStore from "../../store/search";
-import itemMusicStore from '../../store/itemMusic'
+import SongList from '../../components/SongList.vue'
 const state = searchStore();
-const { playList } = storeToRefs(state);
+
+// 搜索歌曲列表
+const songs = computed(()=>{
+  return state.playList
+})
+
 // 后退一步
 const retreats = () => {
-  retreat(router);
+  router.back()
 };
 
 // 搜索歌曲名
@@ -59,17 +36,12 @@ const searchMusic = () => {
   if (keywords.value === "") return;
   state.getSearch(keywords.value);
 };
-
-const play = (index) => {
-    itemMusicStore().playList = playList.value
-    itemMusicStore().playListIndex = index
-}
-
 </script>
 
 <style scoped lang='less'>
 .search {
   padding: 10rem;
+  // 头
   .top {
     display: flex;
     align-items: center;
@@ -94,52 +66,6 @@ const play = (index) => {
       line-height: 30rem;
       border-radius: 20rem;
       margin-left: 10rem;
-    }
-  }
-  .musicList {
-    margin-top: 20rem;
-    .item {
-      display: flex;
-      justify-content: space-between;
-      height: 60rem;
-      align-items: center;
-      background: #fff;
-      .left {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        .name {
-          margin-left: 20rem;
-          display: flex;
-          flex-direction: column;
-          span{
-               width: 200rem;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-          .p {
-            width: 200rem;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            span {
-                color: #999;
-                font-size: 12rem;
-              margin-right: 10rem;
-            }
-          }
-        }
-      }
-      .right {
-        width: 100rem;
-        .icon1 {
-          float: left;
-        }
-        .icon2 {
-          float: right;
-        }
-      }
     }
   }
 }

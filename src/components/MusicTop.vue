@@ -19,7 +19,6 @@
 
 <script setup>
 import {defineProps} from 'vue'
-import {retreat} from '../hooks/itemMisic'
 import { useRouter } from "vue-router";
 import artistState from '../store/artist'
 
@@ -27,9 +26,10 @@ const router = useRouter();
 const props = defineProps(["name","isShow"])
 
 const retreats = () => {
-  if(!props?.isShow)return  retreat(router);
+  if(!props?.isShow)return  router.back()
   artistState().isSongsShow=false
 };
+
 
 const goSearch = () =>{
   router.push({path:"/search"})

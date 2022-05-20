@@ -22,6 +22,7 @@
         <div class="introduce">{{ detailPlaylist.description }}&nbsp;></div>
       </div>
     </div>
+    <!-- 控件 -->
     <div class="floor">
       <div class="floor-item">
         <svg class="icon" aria-hidden="true">
@@ -55,7 +56,7 @@
 import MusicTop from '../../../components/MusicTop.vue'
 import { storeToRefs } from "pinia";
 import itemMusic from "../../../store/itemMusic";
-import { retreat, changeCount } from "../../../hooks/itemMisic";
+import {changeCount } from "../../../hooks/itemMisic";
 
 const state = itemMusic();
 const { detailPlaylist } = storeToRefs(state);

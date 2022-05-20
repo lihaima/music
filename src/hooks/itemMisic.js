@@ -1,7 +1,4 @@
 
-// 后退
-export const retreat = (router) =>{router.back()}
-
 // 重写点赞量
 export const changeCount = (mun) => {
     if (mun >= 100000000) {

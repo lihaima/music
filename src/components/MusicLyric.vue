@@ -81,6 +81,7 @@
           <use xlink:href="#icon-liebiao-"></use>
         </svg>
       </div>
+      <!-- 进度条 -->
       <div class="progressBar">
         <span>{{ current(currentTime) }}</span>
         <van-slider
@@ -94,9 +95,9 @@
           active-color="#000"
           @change="changeSchedule"
         />
-        <!-- <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.01" /> -->
         <span>{{ current(duration) }}</span>
       </div>
+      <!-- 控件 -->
       <div class="musicPlay">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-24gl-repeatOnce2"></use>
@@ -123,13 +124,15 @@
         </svg>
       </div>
     </div>
+
+    <!-- 播放歌曲列表 -->
     <van-popup
       v-model:show="songListPopups"
       round
       position="bottom"
       :style="{ height: '50%' }"
     >
-      <SongList close="lyric" />
+      <Songs close="lyric" />
     </van-popup>
   </div>
 </template>
@@ -141,7 +144,7 @@ import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
 import { current } from "../hooks/itemMisic";
 import itemMusicStore from "../store/itemMusic";
-import SongList from "./Songs.vue";
+import Songs from "./Songs.vue";
 const porps = defineProps(["play", "currentTime"]);
 const state = itemMusicStore();
 const {
@@ -182,7 +185,7 @@ let lyric = computed(() => {
     });
     arr.forEach((item, index) => {
       if (index === arr.length - 1) {
-        item.pre = duration.value*1000;
+        item.pre = duration.value * 1000;
       } else {
         item.pre = arr[index + 1].time;
       }
@@ -231,9 +234,9 @@ watch([currentTime], () => {
     musicLyric.value.scrollTop = p?.offsetTop - 180;
   }
 });
-watch([playListIndex],()=>{
-  musicLyric.value.scrollTop=0
-})
+watch([playListIndex], () => {
+  musicLyric.value.scrollTop = 0;
+});
 </script>
 
 <style scoped lang='less'>

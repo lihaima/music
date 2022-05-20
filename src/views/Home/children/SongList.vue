@@ -29,7 +29,7 @@
 <script setup>
 import homeStore from "../../../store/home";
 const state = homeStore();
-import {retreat,changeCount} from '../../../hooks/itemMisic'
+import {changeCount} from '../../../hooks/itemMisic'
 </script>
 
 <style scoped lang='less'>

@@ -1,7 +1,8 @@
 <template>
+<!-- 歌曲列表 -->
    <div class="MusicList">
-      <div class="item" v-for="(item, index) in detailSongs" :key="index">
-        <div class="item-left" @click="switchover(detailSongs, index)">
+      <div class="item" v-for="(item, index) in props.songs" :key="index">
+        <div class="item-left" @click="switchover(props.songs, index)">
           <span>{{ index + 1 }}</span>
           <div class="name">
             <span>{{ item?.name }}</span
@@ -22,10 +23,12 @@
 </template>
 
 <script setup>
+import {defineProps} from "vue"
 import itemMusicStore from "../store/itemMusic";
 import { storeToRefs } from "pinia";
 const state = itemMusicStore();
 const { detailSongs} = storeToRefs(state);
+const props = defineProps(['songs'])
 
 const switchover = (detailSongs, index) => {
   state.playListIndex = index
