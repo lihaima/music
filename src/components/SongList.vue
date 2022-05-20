@@ -1,83 +1,67 @@
 <template>
-<!-- 歌曲列表 -->
-  <van-swipe vertical :loop="false" :height="50">
-    <van-swipe-item
-      v-for="(item, index) in playList"
-      :key="item.id"
-      @click="play(index)"
-    >
-      <div class="item">
-        <div class="name">
-          <span>{{ item.name }}</span>
-          <span v-for="item in item.ar" :key="item.id" class="singer">
-            {{ item.name }}
-          </span>
+   <div class="MusicList">
+      <div class="item" v-for="(item, index) in detailSongs" :key="index">
+        <div class="item-left" @click="switchover(detailSongs, index)">
+          <span>{{ index + 1 }}</span>
+          <div class="name">
+            <span>{{ item?.name }}</span
+            ><br />
+            <span style="color: #c0c0c0">{{ item?.ar[0]?.name }}</span>
+          </div>
         </div>
-        <svg
-          class="icon"
-          aria-hidden="true"
-          @click="songList"
-          v-if="index === playListIndex"
-        >
-          <use xlink:href="#icon-zhengzaibofang"></use>
-        </svg>
+        <div class="item-right">
+          <svg class="icon icon1" aria-hidden="true" v-if="item.mv != 0">
+            <use xlink:href="#icon-bofang"></use>
+          </svg>
+          <svg class="icon icon2" aria-hidden="true">
+            <use xlink:href="#icon-gengduo"></use>
+          </svg>
+        </div>
       </div>
-    </van-swipe-item>
-  </van-swipe>
-  <div class="close" @click="close">关闭</div>
+    </div>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
-import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
+import { storeToRefs } from "pinia";
 const state = itemMusicStore();
-const { playList, playListIndex } = storeToRefs(state);
-const props = defineProps(["close"]);
+const { detailSongs} = storeToRefs(state);
 
-const close = () => {
-  if (props.close === "lyric") {
-    return (state.songListPopups = false);
-  } else if (props.close === "flooter") {
-    return (state.floorSongList = false);
-  }
-};
-
-const play = (index) => {
-  state.playListIndex = index;
+const switchover = (detailSongs, index) => {
+  state.playListIndex = index
+  state.playList = detailSongs
 };
 </script>
 
 <style scoped lang='less'>
-.van-popup {
-  .van-swipe-item {
+ .MusicList {
     .item {
       display: flex;
       justify-content: space-between;
-      padding: 20rem;
-      border-top: 0.1rem solid #999;
-      .name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        .singer {
-          color: #999;
+      padding: 10rem;
+      .item-left {
+        width: 240rem;
+        display: flex;
+        font-size: 14rem;
+        align-items: center;
+        .name {
+          width: 100%;
           margin-left: 20rem;
-          font-size: 12rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      .item-right {
+        width: 80rem;
+        color: #c0c0c0;
+        .icon1 {
+          float: left;
+        }
+        .icon2 {
+          float: right;
         }
       }
     }
   }
-  .close {
-    width: 100%;
-    border-top: 1rem solid #cdcdcd;
-    height: 40rem;
-    background-color: #fff;
-    text-align: center;
-    line-height: 40rem;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-  }
-}
 </style>

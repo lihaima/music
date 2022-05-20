@@ -22,8 +22,6 @@ export default defineStore("artist",{
        async getSongs(id){
             let songs = await reqArtistSongS(id)
             if(songs.code === 200) this.songsList = songs.songs
-            
-            console.log(songs);
         }
     }
 })

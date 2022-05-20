@@ -9,7 +9,7 @@
 
 <script setup>
 import { onMounted } from "vue";
-import Navigation from "../../components/Navigation.vue";
+import Navigation from "./children/Navigation.vue";
 import Swipe from "./children/Swipe.vue";
 import HomeList from "./children/HomeList.vue";
 import SongList from "./children/SongList.vue";

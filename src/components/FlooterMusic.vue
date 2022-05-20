@@ -52,7 +52,7 @@ import { ref, watch, nextTick, onUpdated } from "vue";
 import { storeToRefs } from "pinia";
 import itemMusicStore from "../store/itemMusic";
 import MusicLyric from "../components/MusicLyric.vue";
-import SongList from "./SongList.vue";
+import SongList from "./Songs.vue";
 const state = itemMusicStore();
 const {
   isBtnShow,
@@ -144,6 +144,7 @@ const showPopups = () => {
 
 <style scoped lang='less'>
 .flooterMusic {
+  z-index: 9999;
   width: 100%;
   height: 50rem;
   background: #fff;

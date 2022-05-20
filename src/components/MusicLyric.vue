@@ -1,6 +1,6 @@
 <template>
   <div class="MusicLyric">
-    <img :src="play.al.picUrl" alt="" class="bgimg" />
+    <img :src="play?.al?.picUrl" alt="" class="bgimg" />
     <!-- 信息 -->
     <div class="top">
       <div class="left">
@@ -37,7 +37,7 @@
           />
           <img src="../assets/cd.png" alt="" class="imgCd" />
           <img
-            :src="play.al.picUrl"
+            :src="play?.al?.picUrl"
             alt=""
             class="imgban"
             :class="{ 'rotate-enter': isBtnShow, 'rotate-leave': !isBtnShow }"
@@ -141,7 +141,7 @@ import { Vue3Marquee } from "vue3-marquee";
 import "vue3-marquee/dist/style.css";
 import { current } from "../hooks/itemMisic";
 import itemMusicStore from "../store/itemMusic";
-import SongList from "./SongList.vue";
+import SongList from "./Songs.vue";
 const porps = defineProps(["play", "currentTime"]);
 const state = itemMusicStore();
 const {
@@ -342,7 +342,7 @@ watch([playListIndex],()=>{
         }
         .active {
           transition: all 1s;
-          color: #fff;
+          color: red;
           font-size: 20rem;
         }
       }

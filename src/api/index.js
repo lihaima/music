@@ -24,4 +24,4 @@ export const reqSearch = (name) => request({url:`/cloudsearch?keywords=${name}`}
 export const reqArtist = (type,area,offset,initial) => request({url:`/artist/list?type=${type}&area=${area}&offset=${offset}&initial=${initial}`})
 
 // 获取歌手歌曲列表
-export const reqArtistSongS = (id) => request({url:`/artist/songs?id=${id}`})
+export const reqArtistSongS = (id) => request({url:`artist/top/song?id=${id}`})

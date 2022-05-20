@@ -26,7 +26,7 @@
       </van-list>
     </div>
     <van-popup v-model:show="isSongsShow" position="right" :style="{ height: '100%', width: '100%' }" >
-        <ArtistSongs :artist="artist" />
+        <ArtistSongs />
     </van-popup>
   </div>
 </template>
@@ -76,7 +76,6 @@ const onLoad = async () => {
 };
 
 // 打开歌手歌曲列表
-let artist = {}
 const goartistSongs = (item) => {
     state.artist = item
     state.isSongsShow=true

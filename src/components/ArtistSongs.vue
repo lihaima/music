@@ -1,12 +1,12 @@
 <template>
   <div class='artistSongs'>
-      <MusicTop :name="name" :isShow="true" />
+      <MusicTop :name="artists?.name" :isShow="true" />
       <div class="name">
-          <img :src="picUrl" alt="">
+          <img :src="artists?.picUrl" alt="">
       </div>
       <div class="MusicList">
-      <div class="item" v-for="(item, index) in songsList" :key="index">
-        <div class="item-left" @click="switchover(songsList, index)">
+      <div class="item" v-for="(item, index) in songs" :key="index">
+        <div class="item-left" @click="switchover(songs, index)">
           <span>{{ index + 1 }}</span>
           <div class="name">
             <span>{{ item?.name }}</span
@@ -29,23 +29,31 @@
 
 <script setup>
 import MusicTop from './MusicTop.vue'
-import {defineProps,onMounted} from 'vue'
-const porps = defineProps(["artist"])
+import {defineProps,onMounted,computed} from 'vue'
 import {storeToRefs} from "pinia"
 import artistStore from '../store/artist'
 import itemMusicStore from '../store/itemMusic'
 const state = artistStore()
-const {artist,songsList} = storeToRefs(state)
-console.log(artist);
-const {id,img1v1Url,picUrl,name} = artist?.value
+
+// 歌曲列表
+const songs = computed(()=>{
+    return state.songsList
+})
+
+// 歌手信息
+const artists = computed(()=>{
+    return state.artist
+})
 
 // 获取歌曲列表
 onMounted(()=>{
-state.getSongs(id)
+state.getSongs(artists?.value?.id)
 })
-const switchover = (songsList, index) => {
+
+// 播放歌曲
+const switchover = (songs, index) => {
   itemMusicStore().playListIndex = index
-  itemMusicStore().playList = songsList
+  itemMusicStore().playList = songs
 };
 
 </script>

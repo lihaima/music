@@ -27,11 +27,8 @@ const router = useRouter();
 const props = defineProps(["name","isShow"])
 
 const retreats = () => {
-   console.log(props?.isShow);
   if(!props?.isShow)return  retreat(router);
- 
   artistState().isSongsShow=false
- 
 };
 
 const goSearch = () =>{
@@ -45,7 +42,6 @@ const goSearch = () =>{
     display: flex;
     justify-content: space-between;
     height: 30rem;
-    margin-top: 10rem;
     .top-left,
     .top-right {
       width: 100rem;
