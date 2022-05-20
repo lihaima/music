@@ -16,3 +16,6 @@ export const reqMusic = (id) => request({url:`/song/url?id=${id}`})
 
 // 获取歌词
 export const reqLyric = (id) => request({url:`/lyric?id=${id}`})
+
+// 搜索歌曲
+export const reqSearch = (name) => request({url:`/cloudsearch?keywords=${name}`})

@@ -182,7 +182,7 @@ let lyric = computed(() => {
     });
     arr.forEach((item, index) => {
       if (index === arr.length - 1) {
-        item.pre = 0;
+        item.pre = duration.value*1000;
       } else {
         item.pre = arr[index + 1].time;
       }
