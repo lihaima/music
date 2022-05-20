@@ -345,7 +345,7 @@ watch([playListIndex], () => {
         }
         .active {
           transition: all 1s;
-          color: red;
+          color: #fff;
           font-size: 20rem;
         }
       }
