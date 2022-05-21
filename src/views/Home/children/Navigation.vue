@@ -5,7 +5,7 @@
       <use xlink:href="#icon-gengduo"></use>
     </svg>
     <div class="nav-content">
-      <span>我的</span>
+      <span @click="login">我的</span>
       <span class="recommend">推荐</span>
       <span>电台</span>
       <span>视频</span>
@@ -19,6 +19,11 @@
 <script setup>
 import {useRouter} from 'vue-router'
 const router = useRouter()
+
+const login = () => {
+  router.push({path:"/login"})
+}
+
 const goSearch = () => {
   router.push({path:"/search"})
 }

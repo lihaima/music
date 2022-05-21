@@ -22,6 +22,11 @@ export default defineStore("artist",{
        async getSongs(id){
             let songs = await reqArtistSongS(id)
             if(songs.code === 200) this.songsList = songs.songs
+        },
+        async getClassifySinger(query){
+            const {type,area,offset,initial} = query
+           let artist =await reqArtist(type,area,offset,initial)
+           this.artistList = artist.artists
         }
     }
 })

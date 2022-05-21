@@ -26,11 +26,6 @@ const artists = computed(()=>{
     return state.artist
 })
 
-// 获取歌曲列表
-onMounted(()=>{
-state.getSongs(artists?.value?.id)
-})
-
 </script>
 
 <style scoped lang='less'>

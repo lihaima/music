@@ -100,7 +100,7 @@
       <!-- 控件 -->
       <div class="musicPlay">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-24gl-repeatOnce2"></use>
+          <use xlink:href="#icon-shunxu"></use>
         </svg>
         <svg class="icon" aria-hidden="true" @click="onA">
           <use xlink:href="#icon-shangyishou_huaban"></use>
@@ -334,6 +334,7 @@ watch([playListIndex], () => {
           }
         }
       }
+       // 歌词
       .musicLyric {
         width: 100%;
         height: 100%;
@@ -344,16 +345,14 @@ watch([playListIndex], () => {
           height: 40rem;
         }
         .active {
+          margin: 5rem 0;
           transition: all 1s;
           color: #fff;
-          font-size: 20rem;
+          font-size: 22rem;
         }
       }
     }
   }
-
-  // 歌词
-
   //   底部
   .flooter {
     height: 200rem;

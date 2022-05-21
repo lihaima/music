@@ -16,7 +16,7 @@
       </li>
       <li @click="goArtist">
         <svg class="icon" aria-hidden="true">
-          <use xlink:href="#icon-gedan"></use>
+          <use xlink:href="#icon-geshou"></use>
         </svg>
         <span>歌手</span>
       </li>

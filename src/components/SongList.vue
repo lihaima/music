@@ -12,7 +12,7 @@
         </div>
         <div class="item-right">
           <svg class="icon icon1" aria-hidden="true" v-if="item.mv != 0">
-            <use xlink:href="#icon-bofang"></use>
+            <use xlink:href="#icon-bofangMV"></use>
           </svg>
           <svg class="icon icon2" aria-hidden="true">
             <use xlink:href="#icon-gengduo"></use>

@@ -2,11 +2,11 @@
   <div class="artist">
     <MusicTop name="歌手" />
     <div class="artistClassify">
-      <div class="place">
-        <span v-for="(item, index) in place" :key="index">{{ item.name }}</span>
+      <div class="placeAll">
+        <span @click="getPlace(index,item.id)" :class="{'highlight':index===place}" class="" v-for="(item, index) in placeAll" :key="index">{{ item.name }}</span>
       </div>
-      <div class="sex">
-        <span v-for="(item, index) in sex" :key="index">{{ item.name }}</span>
+      <div class="sexAll">
+        <span @click="getSex(index,item.id)" :class="{'highlight':index===sex}" v-for="(item, index) in sexAll" :key="index">{{ item.name }}</span>
       </div>
     </div>
     <div class="artistList">
@@ -18,7 +18,7 @@
       >
         <div class="item" v-for="item in artistList" :key="item.id" @click="goartistSongs(item)">
           <div class="name">
-            <img :src="item.picUrl" alt="" />
+            <img :src="item.picUrl+'?60y60'" alt="" />
             <span>{{ item.name }}</span>
           </div>
           <div class="attention">+ 关注</div>
@@ -39,8 +39,9 @@ import ArtistSongs from '../../components/ArtistSongs.vue'
 import { reactive } from "vue";
 import artistStroe from "../../store/artist";
 const state = artistStroe();
-const { artistList,more,isSongsShow } = storeToRefs(state);
+const {artistList,more,isSongsShow } = storeToRefs(state);
 
+// 请求数据
 const query = {
     type:-1,
     area:-1,
@@ -48,19 +49,34 @@ const query = {
     initial:-1
 }
 
-const place = reactive([
-  { name: "全部" },
-  { name: "华语" },
-  { name: "欧美" },
-  { name: "日本" },
-  { name: "韩国" },
-  { name: "其他" },
+// 分类请求
+let place = ref(0)
+let sex = ref(0)
+const getSex = (index,id) => {
+  sex.value = index
+  query.type=id
+  state.getClassifySinger(query)
+}
+const getPlace = (index,id) => {
+  place.value = index
+  query.area=id
+  state.getClassifySinger(query)
+}
+
+// 分类数据
+const placeAll = reactive([
+  { name: "全部",id:-1 },
+  { name: "华语",id:7 },
+  { name: "欧美",id:96 },
+  { name: "日本",id:8 },
+  { name: "韩国",id:16 },
+  { name: "其他",id:0 },
 ]);
-const sex = reactive([
-  { name: "全部" },
-  { name: "男" },
-  { name: "女" },
-  { name: "乐队" },
+const sexAll = reactive([
+  { name: "全部",id:-1 },
+  { name: "男",id:1 },
+  { name: "女",id:2 },
+  { name: "乐队",id:3 },
 ]);
 
 // 上拉触底
@@ -75,8 +91,9 @@ const onLoad = async () => {
   }
 };
 
-// 打开歌手歌曲列表
+// 获取并打开歌手歌曲列表
 const goartistSongs = (item) => {
+  state.getSongs(item.id)
     state.artist = item
     state.isSongsShow=true
 }
@@ -85,7 +102,11 @@ const goartistSongs = (item) => {
 <style scoped lang='less'>
 .artist {
   .artistClassify {
-    .place {
+    .highlight{
+        background-color: aquamarine;
+        color: #fff;
+      }
+    .placeAll {
       margin-top: 20rem;
       span {
         border: 1rem solid #000;
@@ -94,7 +115,7 @@ const goartistSongs = (item) => {
         margin-left: 5rem;
       }
     }
-    .sex {
+    .sexAll {
       margin-top: 20rem;
       span {
         border: 1rem solid #000;
