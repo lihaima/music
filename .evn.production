@@ -1,0 +1,5 @@
+VUE_APP_TITLE = '风靡音乐'
+
+VUE_APP_ENV = 'pro'
+
+VUE_APP_BASE_API = 'https://netease-cloud-music-n7qqkglv4-lihaima.vercel.app'

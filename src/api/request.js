@@ -1,12 +1,12 @@
 import axios from "axios";
 import nprogress from "nprogress";
 import "nprogress/nprogress.css"
-
 const request = axios.create({
-    baseURL:"/api",
-    timeout:5000
+    baseURL:"https://netease-cloud-music-n7qqkglv4-lihaima.vercel.app",
+    timeout:5000,
 })
 request.interceptors.request.use((config)=>{
+    
     nprogress.start()
     return config
 },(err)=>{

@@ -1,6 +1,6 @@
 import request from './request'
 // 获取轮播图
-export const reqBanner = () => request({url:"/banner?type=2&realIP=116.25.146.177"})
+export const reqBanner = () => request({url:"/banner?type=2"})
 
 // 获取推荐歌单
 export const reqRecommend = () => request({url:"/personalized?limit=10"})
