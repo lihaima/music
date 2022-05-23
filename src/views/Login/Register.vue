@@ -52,11 +52,12 @@
         </van-button>
       </div>
     </van-form>
-    <span @click="Q">aaaaa</span>
+    <span @click="Q">用账号，去登录</span>
   </div>
 </template>
 
 <script setup>
+import {Toast} from 'vant'
 import {
   reqDetectionPhone,
   reqCaptcha,
@@ -91,20 +92,21 @@ const verifyPhone = async (value) => {
 
 // 获取验证码
 const getCaptcha = async () => {
-  if (!registerMessage.phone) return;
+  if (!registerMessage.phone) return Toast.fail("电话号码不能为空")
+  if(!pattern.test(registerMessage.phone)) return Toast.fail("请输入正确的号码")
   isDisabled.value=true
    let s = 60
    isCount.value=s+"秒"
   let item = setInterval(()=>{
-     
+    if(s){
       isCount.value=s+"秒"
       s--
-  },1000)
-  setTimeout(()=>{
-      clearInterval(item)
+    }else{
+       clearInterval(item)
       isDisabled.value=false
       isCount.value="获取验证码"
-  },61000)
+    }    
+  },1000)
   let captcha = await reqCaptcha(registerMessage.phone);
 };
 
@@ -126,7 +128,7 @@ const onSubmit = async (value) => {
     const { username,phone,password,verify} = value
     let register = await reqRegister(username,phone,password,verify)
     if(register.code===200){
-        console.log(注册成功);
+        Toast.success('注册成功');
         state.isShowRegister=false
     }else{
         console.log(register.message);
@@ -134,6 +136,10 @@ const onSubmit = async (value) => {
     }
     console.log(register);
 };
+
+const Q = () => {
+  state.isShowRegister=false
+}
 </script>
 
 <style scoped lang='less'>

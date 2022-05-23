@@ -5,7 +5,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://netease-cloud-music-n7qqkglv4-lihaima.vercel.app/',
         pathRewrite:{
           '^/api':'/'
         }

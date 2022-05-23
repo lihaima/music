@@ -1,4 +1,5 @@
-import { Swipe, SwipeItem ,Popup,Slider, List,Form, Field, CellGroup,Button,Col, Row,Toast} from 'vant';
+import {Swipe, SwipeItem ,Popup,Slider, List,Form, Field, CellGroup,Button,Col, Row} from 'vant';
+
 
 let vantList = [Swipe,SwipeItem , Popup,Slider, List,Form, Field, CellGroup,Button,Col,Row]
 

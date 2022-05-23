@@ -20,21 +20,24 @@
           :rules="[{ required: true, message: '请填写密码' }]"
         />
       </van-cell-group>
-      <span @click="register">立即注册</span>
+      <span @click="goRegister">立即注册</span>
       <div style="margin: 16px">
         <van-button round block type="primary" native-type="submit">
           登录
         </van-button>
       </div>
-      <button @click="logout">退出登录</button>
+     
     </van-form>
+     <button @click="logout">退出登录</button>
     <van-popup v-model:show="state.isShowRegister" position="right" :style="{ height: '100%',width:'100%' }" >
       <Register />
     </van-popup>
+    
   </div>
 </template>
 
 <script setup>
+import { Toast} from "vant"
 import {reqLogout} from '../../api/index'
 import { reactive, ref } from "vue";
 import MusicTop from "../../components/MusicTop.vue";
@@ -51,6 +54,7 @@ let userMessage = reactive({
 // 登录
 const onSubmit = () => {
     state.getLogin(userMessage)
+    Toast.success('登录成功');
 }
 
 // 去注册页
@@ -61,6 +65,7 @@ const goRegister = () => {
 // 退出登录
 const logout = async () => {
   console.log(await reqLogout());
+  Toast.success('退出成功');
 }
 </script>
 
