@@ -28,7 +28,6 @@
       </div>
      
     </van-form>
-     <button @click="logout">退出登录</button>
     <van-popup v-model:show="state.isShowRegister" position="right" :style="{ height: '100%',width:'100%' }" >
       <Register />
     </van-popup>
@@ -38,8 +37,9 @@
 
 <script setup>
 import { Toast} from "vant"
-import {reqLogout} from '../../api/index'
-import { reactive, ref } from "vue";
+import { reactive, ref,nextTick} from "vue";
+import {useRouter} from 'vue-router'
+const router = useRouter()
 import MusicTop from "../../components/MusicTop.vue";
 import Register from './Register.vue'
 import loginStore from '../../store/login'
@@ -52,9 +52,15 @@ let userMessage = reactive({
 })
 
 // 登录
-const onSubmit = () => {
-    state.getLogin(userMessage)
-    Toast.success('登录成功');
+const onSubmit =async  () => {
+  let code = await state.getLogin(userMessage)
+  if(code===200){
+     Toast.success('登录成功');  
+     setTimeout(()=>{
+       router.back()
+     },1000)
+  }
+     
 }
 
 // 去注册页
@@ -62,11 +68,6 @@ const goRegister = () => {
   state.isShowRegister = true
 }
 
-// 退出登录
-const logout = async () => {
-  console.log(await reqLogout());
-  Toast.success('退出成功');
-}
 </script>
 
 <style scoped lang='less'>

@@ -148,7 +148,7 @@ const showPopups = () => {
   width: 100%;
   height: 50rem;
   background: #fff;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   left: 0;
   border-top: 1rem solid #cdcdcd;

@@ -1,24 +1,26 @@
 import axios from "axios";
-import nprogress from "nprogress";
-import "nprogress/nprogress.css"
+import {Toast} from 'vant'
 const request = axios.create({
     baseURL:"https://netease-cloud-music-n7qqkglv4-lihaima.vercel.app",
     timeout:5000,
 })
 request.interceptors.request.use((config)=>{
-    
-    nprogress.start()
+    Toast.loading({
+        type:"loading",
+        message: '加载中...',
+        forbidClick: true,
+      });
     return config
 },(err)=>{
-    nprogress.done()
+    Toast.clear();
     return Promise.reject(err)
 })
 
 request.interceptors.response.use((res)=>{
-    nprogress.done()
+    Toast.clear();
     return res.data
 },(err)=>{
-    nprogress.done()  
+    Toast.clear();
     return Promise.reject(err)
 })
 

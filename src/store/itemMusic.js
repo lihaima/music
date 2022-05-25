@@ -32,11 +32,15 @@ export default defineStore("itemMusic", {
         }
     },
     actions: {
+        // 歌单
         async detail(id) {
+            this.detailPlaylist = []
+            this.detailSongs = []
             const detail = await Promise.allSettled([reqDetail(id), reqMusicList(id)])
             this.detailPlaylist = detail[0]?.value?.playlist || []
             this.detailSongs = detail[1]?.value?.songs || []
         },
+        // 歌词
        async lyric(id){
            let lrc = await reqLyric(id)
            if(lrc.code === 200){

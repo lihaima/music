@@ -18,7 +18,7 @@
       >
         <div class="item" v-for="item in artistList" :key="item.id" @click="goartistSongs(item)">
           <div class="name">
-            <img :src="item.picUrl+'?60y60'" alt="" />
+            <img :src="item.picUrl" alt=""  v-lazy="item.picUrl"/>
             <span>{{ item.name }}</span>
           </div>
           <div class="attention">+ 关注</div>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref} from "vue";
 import { storeToRefs } from "pinia";
 import MusicTop from "../../components/MusicTop.vue";
 import ArtistSongs from '../../components/ArtistSongs.vue'
@@ -48,6 +48,8 @@ const query = {
     offset:-1,
     initial:-1
 }
+
+
 
 // 分类请求
 let place = ref(0)

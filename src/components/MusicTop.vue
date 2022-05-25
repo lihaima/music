@@ -38,7 +38,7 @@ const goSearch = () =>{
 
 <style scoped lang='less'>
  .top {
-   background: #000;
+   background: rgba(165,152,148,.3);
     display: flex;
     justify-content: space-between;
     height: 30rem;

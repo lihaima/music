@@ -41,6 +41,7 @@ const searchMusic = () => {
 <style scoped lang='less'>
 .search {
   padding: 10rem;
+  background: rgb(165,152,148);
   // 头
   .top {
     display: flex;
@@ -56,12 +57,14 @@ const searchMusic = () => {
       margin-left: 10rem;
       height: 30rem;
       padding-left: 20rem;
-      background-color: ghostwhite;
+      background-color: rgb(234, 234, 240);
+      border: 2rem solid rgb(224, 224, 226);
     }
     .searchMusic {
       width: 60rem;
       height: 30rem;
       background: #b87333;
+      color: #fff;
       text-align: center;
       line-height: 30rem;
       border-radius: 20rem;
